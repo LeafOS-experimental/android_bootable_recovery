@@ -37,14 +37,23 @@ static const std::vector<std::pair<std::string, Device::BuiltinAction>> kFastboo
 };
 
 void FillDefaultFastbootLines(std::vector<std::string>& title_lines) {
+  std::string bootloader_version = android::base::GetProperty("ro.bootloader", "");
+  std::string baseband_version = android::base::GetProperty("ro.build.expect.baseband", "");
+  std::string hw_version = android::base::GetProperty("ro.revision", "");
+
   title_lines.push_back("Product name - " + android::base::GetProperty("ro.product.device", ""));
-  title_lines.push_back("Bootloader version - " + android::base::GetProperty("ro.bootloader", ""));
-  title_lines.push_back("Baseband version - " +
-                        android::base::GetProperty("ro.build.expect.baseband", ""));
+  if (!android::base::EqualsIgnoreCase(bootloader_version, "unknown")) {
+    title_lines.push_back("Bootloader version - " + bootloader_version);
+  }
+  if (!baseband_version.empty()) {
+    title_lines.push_back("Baseband version - " + baseband_version);
+  }
   title_lines.push_back("Serial number - " + android::base::GetProperty("ro.serialno", ""));
   title_lines.push_back(std::string("Secure boot - ") +
                         ((android::base::GetProperty("ro.secure", "") == "1") ? "yes" : "no"));
-  title_lines.push_back("HW version - " + android::base::GetProperty("ro.revision", ""));
+  if (!android::base::EqualsIgnoreCase(hw_version, "0")) {
+    title_lines.push_back("HW version - " + android::base::GetProperty("ro.revision", ""));
+  }
 }
 
 void FillWearableFastbootLines(std::vector<std::string>& title_lines) {
