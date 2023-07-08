@@ -74,7 +74,13 @@ static bool EraseVolume(const char* volume, RecoveryUI* ui) {
       return false;
     }
 
-    int fd = open(vol->blk_device.c_str(), O_RDWR);
+    int fd;
+    for (int i = 0; i < 500; i++) {
+      fd = open(vol->blk_device.c_str(), O_RDWR);
+      if (fd >= 0)
+        break;
+      std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
     if (fd < 0) {
       PLOG(ERROR) << "Failed to open " << vol->blk_device;
       return false;
