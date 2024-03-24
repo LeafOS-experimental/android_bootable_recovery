@@ -25,6 +25,7 @@
 
 #include <android-base/logging.h>
 #include <android-base/properties.h>
+#include <android-base/strings.h>
 #include <bootloader_message/bootloader_message.h>
 
 #include "recovery_ui/ui.h"
