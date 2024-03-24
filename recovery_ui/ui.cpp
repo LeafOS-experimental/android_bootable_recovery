@@ -247,21 +247,6 @@ bool RecoveryUI::Init(const std::string& /* locale */) {
   return true;
 }
 
-enum SwipeDirection { UP, DOWN, RIGHT, LEFT };
-
-static SwipeDirection FlipSwipeDirection(SwipeDirection direction) {
-  switch (direction) {
-    case UP:
-      return SwipeDirection::DOWN;
-    case DOWN:
-      return SwipeDirection::UP;
-    case RIGHT:
-      return SwipeDirection::LEFT;
-    case LEFT:
-      return SwipeDirection::RIGHT;
-  }
-}
-
 void RecoveryUI::CalibrateTouch(int fd) {
   struct input_absinfo info;
   static bool calibrated = false;
